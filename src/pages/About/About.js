@@ -4,7 +4,7 @@ import img2 from '../../assets/images/about_us/parts.jpg'
 
 export default function About() {
     return (
-        <div className="hero min-h-screen">
+        <div className="hero min-h-screen my-20">
             <div className="hero-content flex-col lg:flex-row">
                 <div className='w-full md:w-3/5  lg:w-1/2 relative mb-20 lg:mb-0'>
                     <img src={img} className=" rounded-lg shadow-2xl w-4/5" />
