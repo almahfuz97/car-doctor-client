@@ -4,8 +4,9 @@ import OrdersRow from './OrdersRow';
 
 export default function Orders() {
     const { user, loading } = useContext(AuthContext);
-    const [orders, setOrders] = useState();
+    const [orders, setOrders] = useState([]);
     console.log(orders)
+
 
     useEffect(() => {
         fetch(`http://localhost:5000/orders?email=${user?.email}`)
@@ -14,6 +15,23 @@ export default function Orders() {
             .catch(err => console.log(err))
 
     }, [user?.email])
+
+    const handleDelete = (id) => {
+        const proceed = window.confirm('Do you want to delete it?');
+        console.log(proceed)
+        if (proceed) {
+            fetch(`http://localhost:5000/orders/${id}`, {
+                method: "DELETE",
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.deletedCount > 0) {
+                        const remaining = orders.filter(os => os._id !== id);
+                        setOrders(remaining);
+                    }
+                })
+        }
+    }
 
     if (loading) return <div>Loading...</div>
 
@@ -39,7 +57,7 @@ export default function Orders() {
 
                             <tbody>
                                 {
-                                    orders.map(order => <OrdersRow key={order.serviceId} order={order} />)
+                                    orders.map(order => <OrdersRow key={order._id} order={order} handleDelete={handleDelete} />)
                                 }
 
                             </tbody>
